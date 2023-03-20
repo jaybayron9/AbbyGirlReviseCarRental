@@ -42,16 +42,16 @@ return true;
             <div class="col-md-12">
               <form name="chngpwd" method="post" onSubmit="return valid();">
                 <div class="form-group">
-                  <input type="email" name="email" class="form-control" placeholder="Your Email address*" required="">
+                  <input type="email" name="email" maxlength="40" class="form-control" placeholder="Your Email address*" required="">
                 </div>
   <div class="form-group">
-                  <input type="text" name="mobile" class="form-control" placeholder="Your Reg. Mobile*" required="">
+                  <input type="text" name="mobile" maxlength="40" class="form-control" placeholder="Your Reg. Mobile*" required="">
                 </div>
   <div class="form-group">
-                  <input type="password" name="newpassword" class="form-control" placeholder="New Password*" required="">
+                  <input type="password" name="newpassword" maxlength="40" class="form-control" placeholder="New Password*" required="">
                 </div>
   <div class="form-group">
-                  <input type="password" name="confirmpassword" class="form-control" placeholder="Confirm Password*" required="">
+                  <input type="password" name="confirmpassword" maxlength="40" class="form-control" placeholder="Confirm Password*" required="">
                 </div>
                 <div class="form-group">
                   <input type="submit" value="Reset My Password" name="update" class="btn btn-block">
