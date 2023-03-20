@@ -10,10 +10,7 @@ else{
 if(isset($_GET['del']))
 {
 $id=$_GET['del'];
-$sql = "delete from tblbrands  WHERE id=:id";
-$query = $dbh->prepare($sql);
-$query -> bindParam(':id',$id, PDO::PARAM_STR);
-$query -> execute();
+$sql = $dbh->query("delete from tblbrands  WHERE id='{$id}'");
 $msg="Page data updated  successfully";
 
 }
@@ -122,25 +119,22 @@ $msg="Page data updated  successfully";
 									</tfoot>
 									<tbody>
 
-									<?php $sql = "SELECT * from  tblusers ";
-$query = $dbh -> prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
+									<?php $sql = $dbh->query("SELECT * from  tblusers ");
 $cnt=1;
-if($query->rowCount() > 0)
+if($sql->num_rows > 0)
 {
-foreach($results as $result)
+foreach($sql as $result)
 {				?>	
 										<tr>
 											<td><?php echo htmlentities($cnt);?></td>
-											<td><?php echo htmlentities($result->FullName);?></td>
-											<td><?php echo htmlentities($result->EmailId);?></td>
-											<td><?php echo htmlentities($result->ContactNo);?></td>
-	<td><?php echo htmlentities($result->dob);?></td>
-											<td><?php echo htmlentities($result->Address);?></td>
-											<td><?php echo htmlentities($result->City);?></td>
-											<td><?php echo htmlentities($result->Country);?></td>
-											<td><?php echo htmlentities($result->RegDate);?></td>
+											<td><?php echo htmlentities($result['FullName']);?></td>
+											<td><?php echo htmlentities($result['EmailId']);?></td>
+											<td><?php echo htmlentities($result['ContactNo']);?></td>
+											<td><?php echo htmlentities($result['dob']);?></td>
+											<td><?php echo htmlentities($result['Address']);?></td>
+											<td><?php echo htmlentities($result['City']);?></td>
+											<td><?php echo htmlentities($result['Country']);?></td>
+											<td><?php echo htmlentities($result['RegDate']);?></td>
 										</tr>
 										<?php $cnt=$cnt+1; }} ?>
 										

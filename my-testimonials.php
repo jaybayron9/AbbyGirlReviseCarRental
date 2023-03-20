@@ -76,15 +76,11 @@ else{
 
 <?php 
 $useremail=$_SESSION['login'];
-$sql = "SELECT * from tblusers where EmailId=:useremail";
-$query = $dbh -> prepare($sql);
-$query -> bindParam(':useremail',$useremail, PDO::PARAM_STR);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
+$sql = $dbh->query("SELECT * from tblusers where EmailId='{$useremai}'");
 $cnt=1;
-if($query->rowCount() > 0)
+if($sql->num_rows > 0)
 {
-foreach($results as $result)
+foreach($sql as $result)
 { ?>
 <section class="user_profile inner_pages">
   <div class="container">
@@ -93,9 +89,9 @@ foreach($results as $result)
       </div>
 
       <div class="dealer_info">
-        <h5><?php echo htmlentities($result->FullName);?></h5>
-        <p><?php echo htmlentities($result->Address);?><br>
-          <?php echo htmlentities($result->City);?>&nbsp;<?php echo htmlentities($result->Country); }}?></p>
+        <h5><?php echo htmlentities($result['FullName']);?></h5>
+        <p><?php echo htmlentities($result['Address']);?><br>
+          <?php echo htmlentities($result['City']);?>&nbsp;<?php echo htmlentities($result['Country']); }}?></p>
       </div>
     </div>
   
@@ -112,24 +108,20 @@ foreach($results as $result)
             <ul class="vehicle_listing">
 <?php 
 $useremail=$_SESSION['login'];
-$sql = "SELECT * from tbltestimonial where UserEmail=:useremail";
-$query = $dbh -> prepare($sql);
-$query -> bindParam(':useremail',$useremail, PDO::PARAM_STR);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
+$sql = $dbh->query("SELECT * from tbltestimonial where UserEmail='{$useremail}'");
 
-if($cnt=$query->rowCount() > 0)
+if($cnt=$sql->num_rows > 0)
 {
-foreach($results as $result)
+foreach($sql as $result)
 { ?>
 
               <li>
            
                 <div>
-                 <p><?php echo htmlentities($result->Testimonial);?> </p>
-                   <p><b>Posting Date:</b><?php echo htmlentities($result->PostingDate);?> </p>
+                 <p><?php echo htmlentities($result['Testimonial']);?> </p>
+                   <p><b>Posting Date:</b><?php echo htmlentities($result['PostingDate']);?> </p>
                 </div>
-                <?php if($result->status==1){ ?>
+                <?php if($result['status']==1){ ?>
                  <div class="vehicle_status"> <a class="btn outline btn-xs active-btn">Active</a>
 
                   <div class="clearfix"></div>

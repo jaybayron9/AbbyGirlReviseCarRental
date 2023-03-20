@@ -11,11 +11,7 @@ if(isset($_REQUEST['eid']))
 	{
 $eid=intval($_GET['eid']);
 $status=1;
-$sql = "UPDATE tblcontactusquery SET status=:status WHERE  id=:eid";
-$query = $dbh->prepare($sql);
-$query -> bindParam(':status',$status, PDO::PARAM_STR);
-$query-> bindParam(':eid',$eid, PDO::PARAM_STR);
-$query -> execute();
+$sql = $dbh->query("UPDATE tblcontactusquery SET status='{$status}' WHERE  id='{$eid}'");
 
 $msg="Testimonial Successfully Inacrive";
 }
@@ -119,28 +115,25 @@ $msg="Testimonial Successfully Inacrive";
 									</tfoot>
 									<tbody>
 
-									<?php $sql = "SELECT * from  tblcontactusquery ";
-$query = $dbh -> prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
+									<?php $sql = $dbh->query("SELECT * from  tblcontactusquery ");
 $cnt=1;
-if($query->rowCount() > 0)
+if($sql->num_rows > 0)
 {
-foreach($results as $result)
+foreach($sql as $result)
 {				?>	
 										<tr>
 											<td><?php echo htmlentities($cnt);?></td>
-											<td><?php echo htmlentities($result->name);?></td>
-											<td><?php echo htmlentities($result->EmailId);?></td>
-											<td><?php echo htmlentities($result->ContactNumber);?></td>
-											<td><?php echo htmlentities($result->Message);?></td>
-											<td><?php echo htmlentities($result->PostingDate);?></td>
-																<?php if($result->status==1)
+											<td><?php echo htmlentities($result['name']);?></td>
+											<td><?php echo htmlentities($result['EmailId']);?></td>
+											<td><?php echo htmlentities($result['ContactNumber']);?></td>
+											<td><?php echo htmlentities($result['Message']);?></td>
+											<td><?php echo htmlentities($result['PostingDate']);?></td>
+																<?php if($result['status']==1)
 {
 	?><td>Read</td>
 <?php } else {?>
 
-<td><a href="manage-conactusquery.php?eid=<?php echo htmlentities($result->id);?>" onclick="return confirm('Do you really want to read')" >Pending</a>
+<td><a href="manage-conactusquery.php?eid=<?php echo htmlentities($result['id']);?>" onclick="return confirm('Do you really want to read')" >Pending</a>
 </td>
 <?php } ?>
 										</tr>

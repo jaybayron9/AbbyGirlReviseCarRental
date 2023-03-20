@@ -10,10 +10,7 @@ else{
 if(isset($_GET['del']))
 {
 $id=$_GET['del'];
-$sql = "delete from  tblsubscribers  WHERE id=:id";
-$query = $dbh->prepare($sql);
-$query -> bindParam(':id',$id, PDO::PARAM_STR);
-$query -> execute();
+$sql = $dbh->query("delete from  tblsubscribers  WHERE id='{$id}'");
 $msg="Subscriber info deleted";
 
 }
@@ -109,25 +106,22 @@ $msg="Subscriber info deleted";
 									</tfoot>
 									<tbody>
 
-									<?php $sql = "SELECT * from tblsubscribers";
-$query = $dbh -> prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
+									<?php $sql = $dbh->query("SELECT * from tblsubscribers");
 $cnt=1;
-if($query->rowCount() > 0)
+if($sql->num_rows > 0)
 {
-foreach($results as $result)
+foreach($sql as $result)
 {				?>	
 										<tr>
 											<td><?php echo htmlentities($cnt);?></td>
-											<td><?php echo htmlentities($result->SubscriberEmail);?></td>
+											<td><?php echo htmlentities($result['SubscriberEmail']);?></td>
 									
-											<td><?php echo htmlentities($result->PostingDate);?></td>
+											<td><?php echo htmlentities($result['PostingDate']);?></td>
 
 										<td>
 
 
-<a href="manage-subscribers.php?del=<?php echo $result->id;?>" onclick="return confirm('Do you want to delete');"><i class="fa fa-close"></i></a>
+<a href="manage-subscribers.php?del=<?php echo $result['id'];?>" onclick="return confirm('Do you want to delete');"><i class="fa fa-close"></i></a>
 </td>
 
 										</tr>

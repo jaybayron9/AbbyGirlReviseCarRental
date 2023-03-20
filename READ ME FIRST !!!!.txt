@@ -25,3 +25,6 @@ WITHOUT THE DATABASE THE PROJECT WON'T RUN.
 
 
 #THANK YOU FOR DOWNLOADING
+
+
+? edit-brand.php nako admin

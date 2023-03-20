@@ -13,19 +13,10 @@ if(isset($_POST['update']))
 $password=md5($_POST['password']);
 $newpassword=md5($_POST['newpassword']);
 $email=$_SESSION['login'];
-  $sql ="SELECT Password FROM tblusers WHERE EmailId=:email and Password=:password";
-$query= $dbh -> prepare($sql);
-$query-> bindParam(':email', $email, PDO::PARAM_STR);
-$query-> bindParam(':password', $password, PDO::PARAM_STR);
-$query-> execute();
-$results = $query -> fetchAll(PDO::FETCH_OBJ);
-if($query -> rowCount() > 0)
+$sql = $dbh->query("SELECT Password FROM tblusers WHERE EmailId='{$email}' and Password='{$password}'");
+if($sql -> num_rows > 0)
 {
-$con="update tblusers set Password=:newpassword where EmailId=:email";
-$chngpwd1 = $dbh->prepare($con);
-$chngpwd1-> bindParam(':email', $email, PDO::PARAM_STR);
-$chngpwd1-> bindParam(':newpassword', $newpassword, PDO::PARAM_STR);
-$chngpwd1->execute();
+$con= $dbh->query("update tblusers set Password='{$newpassword}' where EmailId='{$email}'");
 $msg="Your Password succesfully changed";
 }
 else {
@@ -134,15 +125,11 @@ return true;
 
 <?php 
 $useremail=$_SESSION['login'];
-$sql = "SELECT * from tblusers where EmailId=:useremail";
-$query = $dbh -> prepare($sql);
-$query -> bindParam(':useremail',$useremail, PDO::PARAM_STR);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
+$sql = $dbh->query("SELECT * from tblusers where EmailId='{$useremail}'");
 $cnt=1;
-if($query->rowCount() > 0)
+if($sql->num_rows > 0)
 {
-foreach($results as $result)
+foreach($sql as $result)
 { ?>
 <section class="user_profile inner_pages">
   <div class="container">
@@ -151,9 +138,9 @@ foreach($results as $result)
       </div>
 
       <div class="dealer_info">
-        <h5><?php echo htmlentities($result->FullName);?></h5>
-        <p><?php echo htmlentities($result->Address);?><br>
-          <?php echo htmlentities($result->City);?>&nbsp;<?php echo htmlentities($result->Country);}}?></p>
+        <h5><?php echo htmlentities($result['FullName']);?></h5>
+        <p><?php echo htmlentities($result['Address']);?><br>
+          <?php echo htmlentities($result['City']);?>&nbsp;<?php echo htmlentities($result['Country']);}}?></p>
       </div>
     </div>
     <div class="row">

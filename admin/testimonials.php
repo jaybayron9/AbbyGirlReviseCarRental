@@ -11,11 +11,7 @@ if(isset($_REQUEST['eid']))
 	{
 $eid=intval($_GET['eid']);
 $status="0";
-$sql = "UPDATE tbltestimonial SET status=:status WHERE  id=:eid";
-$query = $dbh->prepare($sql);
-$query -> bindParam(':status',$status, PDO::PARAM_STR);
-$query-> bindParam(':eid',$eid, PDO::PARAM_STR);
-$query -> execute();
+$sql = $dbh->query("UPDATE tbltestimonial SET status='{$status}' WHERE  id='{$eid}'");
 
 $msg="Testimonial Successfully Inacrive";
 }
@@ -26,11 +22,7 @@ if(isset($_REQUEST['aeid']))
 $aeid=intval($_GET['aeid']);
 $status=1;
 
-$sql = "UPDATE tbltestimonial SET status=:status WHERE  id=:aeid";
-$query = $dbh->prepare($sql);
-$query -> bindParam(':status',$status, PDO::PARAM_STR);
-$query-> bindParam(':aeid',$aeid, PDO::PARAM_STR);
-$query -> execute();
+$sql = $dbh->query("UPDATE tbltestimonial SET status='{$status}' WHERE  id='{$aeid}'");
 
 $msg="Testimonial Successfully Active";
 }
@@ -130,27 +122,24 @@ $msg="Testimonial Successfully Active";
 									</tfoot>
 									<tbody>
 
-									<?php $sql = "SELECT tblusers.FullName,tbltestimonial.UserEmail,tbltestimonial.Testimonial,tbltestimonial.PostingDate,tbltestimonial.status,tbltestimonial.id from tbltestimonial join tblusers on tblusers.Emailid=tbltestimonial.UserEmail";
-$query = $dbh -> prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
+									<?php $sql = $dbh->query("SELECT tblusers.FullName,tbltestimonial.UserEmail,tbltestimonial.Testimonial,tbltestimonial.PostingDate,tbltestimonial.status,tbltestimonial.id from tbltestimonial join tblusers on tblusers.Emailid=tbltestimonial.UserEmail");
 $cnt=1;
-if($query->rowCount() > 0)
+if($sql->num_rows > 0)
 {
-foreach($results as $result)
+foreach($sql as $result)
 {				?>	
 										<tr>
 											<td><?php echo htmlentities($cnt);?></td>
-											<td><?php echo htmlentities($result->FullName);?></td>
-											<td><?php echo htmlentities($result->UserEmail);?></td>
-											<td><?php echo htmlentities($result->Testimonial);?></td>
-											<td><?php echo htmlentities($result->PostingDate);?></td>
-										<td><?php if($result->status=="" || $result->status==0)
+											<td><?php echo htmlentities($result['FullName']);?></td>
+											<td><?php echo htmlentities($result['UserEmail']);?></td>
+											<td><?php echo htmlentities($result['Testimonial']);?></td>
+											<td><?php echo htmlentities($result['PostingDate']);?></td>
+										<td><?php if($result['status']=="" || $result['status']==0)
 {
-	?><a href="testimonials.php?aeid=<?php echo htmlentities($result->id);?>" onclick="return confirm('Do you really want to Active')"> Inactive</a>
+	?><a href="testimonials.php?aeid=<?php echo htmlentities($result['id']);?>" onclick="return confirm('Do you really want to Active')"> Inactive</a>
 <?php } else {?>
 
-<a href="testimonials.php?eid=<?php echo htmlentities($result->id);?>" onclick="return confirm('Do you really want to Inactive')"> Active</a>
+<a href="testimonials.php?eid=<?php echo htmlentities($result['id']);?>" onclick="return confirm('Do you really want to Inactive')"> Active</a>
 </td>
 <?php } ?></td>
 										</tr>

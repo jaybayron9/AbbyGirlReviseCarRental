@@ -85,15 +85,11 @@ else{
 
 <?php
 $useremail=$_SESSION['login'];
-$sql = "SELECT * from tblusers where EmailId=:useremail";
-$query = $dbh -> prepare($sql);
-$query -> bindParam(':useremail',$useremail, PDO::PARAM_STR);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
+$sql = $dbh->query("SELECT * from tblusers where EmailId='{$useremail}'");
 $cnt=1;
-if($query->rowCount() > 0)
+if($sql->num_rows > 0)
 {
-foreach($results as $result)
+foreach($sql as $result)
 { ?>
 <section class="user_profile inner_pages">
   <div class="container">
@@ -102,9 +98,9 @@ foreach($results as $result)
       </div>
 
       <div class="dealer_info">
-        <h5><?php echo htmlentities($result->FullName);?></h5>
-        <p><?php echo htmlentities($result->Address);?><br>
-          <?php echo htmlentities($result->City);?>&nbsp;<?php echo htmlentities($result->Country); }}?></p>
+        <h5><?php echo htmlentities($result['FullName']);?></h5>
+        <p><?php echo htmlentities($result['Address']);?><br>
+          <?php echo htmlentities($result['City']);?>&nbsp;<?php echo htmlentities($result['Country']); }}?></p>
       </div>
     </div>
     <div class="row">
@@ -118,30 +114,26 @@ foreach($results as $result)
             <ul class="vehicle_listing">
 <?php
 $useremail=$_SESSION['login'];
- $sql = "SELECT tblvehicles.Vimage1 as Vimage1,tblvehicles.VehiclesTitle,tblvehicles.id as vid,tblbrands.BrandName,tblbooking.FromDate,tblbooking.ToDate,tblbooking.message,tblbooking.Status  from tblbooking join tblvehicles on tblbooking.VehicleId=tblvehicles.id join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand where tblbooking.userEmail=:useremail";
-$query = $dbh -> prepare($sql);
-$query-> bindParam(':useremail', $useremail, PDO::PARAM_STR);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
+ $sql = $dbh->query("SELECT tblvehicles.Vimage1 as Vimage1,tblvehicles.VehiclesTitle,tblvehicles.id as vid,tblbrands.BrandName,tblbooking.FromDate,tblbooking.ToDate,tblbooking.message,tblbooking.Status  from tblbooking join tblvehicles on tblbooking.VehicleId=tblvehicles.id join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand where tblbooking.userEmail='{$useremail}'");
 $cnt=1;
-if($query->rowCount() > 0)
+if($sql->num_rows > 0)
 {
-foreach($results as $result)
+foreach($sql as $result)
 {  ?>
 
 <li>
-                <div class="vehicle_img"> <a href="vehical-details.php?vhid=<?php echo htmlentities($result->vid);?>""><img src="admin/img/vehicleimages/<?php echo htmlentities($result->Vimage1);?>" alt="image"></a> </div>
+                <div class="vehicle_img"> <a href="vehical-details.php?vhid=<?php echo htmlentities($result['vid']);?>""><img src="admin/img/vehicleimages/<?php echo htmlentities($result['Vimage1']);?>" alt="image"></a> </div>
                 <div class="vehicle_title">
-                  <h6><a href="vehical-details.php?vhid=<?php echo htmlentities($result->vid);?>""> <?php echo htmlentities($result->BrandName);?> , <?php echo htmlentities($result->VehiclesTitle);?></a></h6>
-                  <p><b>From Date:</b> <?php echo htmlentities($result->FromDate);?><br /> <b>To Date:</b> <?php echo htmlentities($result->ToDate);?></p>
+                  <h6><a href="vehical-details.php?vhid=<?php echo htmlentities($result['vid']);?>""> <?php echo htmlentities($result['BrandName']);?> , <?php echo htmlentities($result['VehiclesTitle']);?></a></h6>
+                  <p><b>From Date:</b> <?php echo htmlentities($result['FromDate']);?><br /> <b>To Date:</b> <?php echo htmlentities($result['ToDate']);?></p>
                 </div>
-                <?php if($result->Status==1)
+                <?php if($result['Status']==1)
                 { ?>
                 <div class="vehicle_status"> <a href="#" class="btn outline btn-xs active-btn">Confirmed</a>
                            <div class="clearfix"></div>
         </div>
 
-              <?php } else if($result->Status==2) { ?>
+              <?php } else if($result['Status']==2) { ?>
  <div class="vehicle_status"> <a href="#" class="btn outline btn-xs">Cancelled</a>
             <div class="clearfix"></div>
         </div>
@@ -153,7 +145,7 @@ foreach($results as $result)
             <div class="clearfix"></div>
         </div>
                 <?php } ?>
-       <div style="float: left"><p><b>Message:</b> <?php echo htmlentities($result->message);?> </p></div>
+       <div style="float: left"><p><b>Message:</b> <?php echo htmlentities($result['message']);?> </p></div>
               </li>
               <?php }} ?>
 
