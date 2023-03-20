@@ -2,22 +2,15 @@
 if(isset($_POST['emailsubscibe']))
 {
 $subscriberemail=$_POST['subscriberemail'];
-$sql ="SELECT SubscriberEmail FROM tblsubscribers WHERE SubscriberEmail=:subscriberemail";
-$query= $dbh -> prepare($sql);
-$query-> bindParam(':subscriberemail', $subscriberemail, PDO::PARAM_STR);
-$query-> execute();
-$results = $query -> fetchAll(PDO::FETCH_OBJ);
+$sql = $dbh->query("SELECT SubscriberEmail FROM tblsubscribers WHERE SubscriberEmail='{$subscriberemail}'");
 $cnt=1;
-if($query -> rowCount() > 0)
+if($sql -> num_rows > 0)
 {
 echo "<script>alert('Already Subscribed.');</script>";
 }
 else{
-$sql="INSERT INTO  tblsubscribers(SubscriberEmail) VALUES(:subscriberemail)";
-$query = $dbh->prepare($sql);
-$query->bindParam(':subscriberemail',$subscriberemail,PDO::PARAM_STR);
-$query->execute();
-$lastInsertId = $dbh->lastInsertId();
+$sql=$dbh->query("INSERT INTO  tblsubscribers(SubscriberEmail) VALUES('{$subscriberemail}')");
+$lastInsertId = $dbh->query("SELECT lastInsertId() FROM tblsubscribers");
 if($lastInsertId)
 {
 echo "<script>alert('Subscribed successfully.');</script>";
@@ -79,7 +72,7 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
           </div>
         </div>
         <div class="col-md-6 col-md-pull-6">
-          <p class="copy-right">Copyright &copy; 2017 Car Rental Portal. Brought To You By <a href="https://code-projects.org/">Code-Projects</a></p>
+          <p class="copy-right">Copyright &copy; 2023 Car Rental Portal. Brought To You By <a href="https://code-projects.org/">AbbyGirl</a></p>
         </div>
       </div>
     </div>

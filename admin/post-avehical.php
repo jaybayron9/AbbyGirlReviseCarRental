@@ -67,7 +67,7 @@ $error="Something went wrong. Please try again";
 	<meta name="theme-color" content="#3e454c">
 	
 	<title>Car Rental Portal | Admin Post Vehicle</title>
-
+	<link rel="shortcut icon" href="../assets/images/favicon-icon/favicon.png">
 	<!-- Font awesome -->
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<!-- Sandstone Bootstrap CSS -->

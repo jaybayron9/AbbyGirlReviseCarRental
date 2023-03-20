@@ -6,14 +6,8 @@ $fname=$_POST['fullname'];
 $email=$_POST['emailid']; 
 $mobile=$_POST['mobileno'];
 $password=md5($_POST['password']); 
-$sql="INSERT INTO  tblusers(FullName,EmailId,ContactNo,Password) VALUES(:fname,:email,:mobile,:password)";
-$query = $dbh->prepare($sql);
-$query->bindParam(':fname',$fname,PDO::PARAM_STR);
-$query->bindParam(':email',$email,PDO::PARAM_STR);
-$query->bindParam(':mobile',$mobile,PDO::PARAM_STR);
-$query->bindParam(':password',$password,PDO::PARAM_STR);
-$query->execute();
-$lastInsertId = $dbh->lastInsertId();
+$sql= $dbh->query("INSERT INTO  tblusers(FullName,EmailId,ContactNo,Password) VALUES('{$fname}','{$email}','{$mobile}','{$password}')");
+$lastInsertId = $dbh->query("SELECT LAST_INSERT_ID() FROM tblusers");
 if($lastInsertId)
 {
 echo "<script>alert('Registration successfull. Now you can login');</script>";

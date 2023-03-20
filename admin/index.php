@@ -30,6 +30,7 @@ echo "<script type='text/javascript'> document.location = 'change-password.php';
 	<meta name="author" content="">
 
 	<title>Car Rental Portal | Admin Login</title>
+	<link rel="shortcut icon" href="../assets/images/favicon-icon/favicon.png">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/dataTables.bootstrap.min.css">
@@ -58,10 +59,12 @@ echo "<script type='text/javascript'> document.location = 'change-password.php';
 									<label for="" class="text-uppercase text-sm">Password</label>
 									<input type="password" placeholder="Password" name="password" class="form-control mb">
 
-
-
+									
 									<button class="btn btn-primary btn-block" name="login" type="submit">LOGIN</button>
- 
+									
+									<div style="margin-top: 25px">
+										<a href="forgot-password.php" >Forgot Password?</a>
+									</div>
 								</form>
 							</div>
 						</div>

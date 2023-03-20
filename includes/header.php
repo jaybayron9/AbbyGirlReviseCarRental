@@ -10,12 +10,12 @@
             <div class="header_widgets">
               <div class="circle_icon"> <i class="fa fa-envelope" aria-hidden="true"></i> </div>
               <p class="uppercase_text">For Support Mail us : </p>
-              <a href="mailto:info@example.com">codeprojectsorg@gmail.com</a>
+              <a href="mailto:info@example.com">abbygurl@gmail.com</a>
             </div>
             <div class="header_widgets">
               <div class="circle_icon"> <i class="fa fa-phone" aria-hidden="true"></i> </div>
               <p class="uppercase_text">Service Helpline Call Us: </p>
-              <a href="tel:61-1234-5678-09">+91-9876543210</a>
+              <a href="tel:61-1234-5678-09">+63-1234567890</a>
             </div>
             <div class="social-follow">
               <ul>
@@ -41,11 +41,11 @@
 
   <!-- Navigation -->
   <nav id="navigation_bar" class="navbar navbar-default">
-    <div class="container">
+    <div class="container" style="display: flex; flex-direction: row;">
       <div class="navbar-header">
         <button id="menu_slide" data-target="#navigation" aria-expanded="false" data-toggle="collapse" class="navbar-toggle collapsed" type="button"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
       </div>
-      <div class="header_wrap">
+      <div class=" " style="margin-right: 60px">
         <div class="user_login">
           <ul>
             <li class="dropdown"> <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true"></i>

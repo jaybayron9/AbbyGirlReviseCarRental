@@ -8,14 +8,8 @@ $name=$_POST['fullname'];
 $email=$_POST['email'];
 $contactno=$_POST['contactno'];
 $message=$_POST['message'];
-$sql="INSERT INTO  tblcontactusquery(name,EmailId,ContactNumber,Message) VALUES(:name,:email,:contactno,:message)";
-$query = $dbh->prepare($sql);
-$query->bindParam(':name',$name,PDO::PARAM_STR);
-$query->bindParam(':email',$email,PDO::PARAM_STR);
-$query->bindParam(':contactno',$contactno,PDO::PARAM_STR);
-$query->bindParam(':message',$message,PDO::PARAM_STR);
-$query->execute();
-$lastInsertId = $dbh->lastInsertId();
+$sql= $dbh->query("INSERT INTO  tblcontactusquery(name,EmailId,ContactNumber,Message) VALUES('{$name}','{$email}','{$contactno}','{$message}')");
+$lastInsertId = $dbh->query("SELECT lastInsertId() FROM tblcontactusquery");
 if($lastInsertId)
 {
 $msg="Query Sent. We will contact you shortly";
@@ -150,28 +144,24 @@ $error="Something went wrong. Please try again";
         <div class="contact_detail">
               <?php 
 $pagetype=$_GET['type'];
-$sql = "SELECT Address,EmailId,ContactNo from tblcontactusinfo";
-$query = $dbh -> prepare($sql);
-$query->bindParam(':pagetype',$pagetype,PDO::PARAM_STR);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
+$sql = $dbh->query("SELECT Address,EmailId,ContactNo from tblcontactusinfo");
 $cnt=1;
-if($query->rowCount() > 0)
+if($sql->num_rows > 0)
 {
-foreach($results as $result)
+foreach($sql as $result)
 { ?>
           <ul>
             <li>
               <div class="icon_wrap"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
-              <div class="contact_info_m"><?php   echo htmlentities($result->Address); ?></div>
+              <div class="contact_info_m"><?php   echo htmlentities($result['Address']); ?></div>
             </li>
             <li>
               <div class="icon_wrap"><i class="fa fa-phone" aria-hidden="true"></i></div>
-              <div class="contact_info_m"><a href="tel:61-1234-567-90"><?php   echo htmlentities($result->EmailId); ?></a></div>
+              <div class="contact_info_m"><a href="tel:61-1234-567-90"><?php   echo htmlentities($result['EmailId']); ?></a></div>
             </li>
             <li>
               <div class="icon_wrap"><i class="fa fa-envelope-o" aria-hidden="true"></i></div>
-              <div class="contact_info_m"><a href="mailto:contact@exampleurl.com"><?php   echo htmlentities($result->ContactNo); ?></a></div>
+              <div class="contact_info_m"><a href="mailto:contact@exampleurl.com"><?php   echo htmlentities($result['ContactNo']); ?></a></div>
             </li>
           </ul>
         <?php }} ?>

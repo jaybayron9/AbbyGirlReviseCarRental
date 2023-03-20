@@ -84,9 +84,10 @@ error_reporting(0);
 $brand=$_POST['brand'];
 $fueltype=$_POST['fueltype'];
 $sql = $dbh->query("SELECT id from tblvehicles where tblvehicles.VehiclesBrand='{$brand}' and tblvehicles.FuelType='{$fueltype}'");
-$cnt=$sql->$dbh->query("SELECT count(*) from tblvehicles");
+$cnts=$dbh->query("SELECT count(*) as sum from tblvehicles");
+$cnt = mysqli_fetch_array($cnts);
 ?>
-<p><span><?php echo htmlentities($cnt);?> Listings</span></p>
+<p><span><?php echo htmlentities($cnt['sum']);?> Listings</span></p>
 </div>
 </div>
 
@@ -131,7 +132,7 @@ foreach($sql1 as $result)
 $cnt=1;
 if($sql2->num_rows > 0)
 {
-foreach($results as $result)
+foreach($sql2 as $result)
 {       ?>  
 <option value="<?php echo htmlentities($result['id']);?>"><?php echo htmlentities($result['BrandName']);?></option>
 <?php }} ?>

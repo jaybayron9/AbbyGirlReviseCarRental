@@ -55,7 +55,7 @@ error_reporting(0);
           <div class="banner_content">
             <h1>Find the right car for you.</h1>
             <p>We have more than a thousand cars for you to choose. </p>
-            <a href="#" class="btn">Read More <span class="angle_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a> </div>
+            <a href="page.php?type=faqs" class="btn">Read More <span class="angle_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a> </div>
         </div>
       </div>
     </div>
@@ -68,8 +68,8 @@ error_reporting(0);
 <section class="section-padding gray-bg">
   <div class="container">
     <div class="section-header text-center">
-      <h2>Find the Best <span>CarForYou</span></h2>
-      <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
+      <h2>Find the Best <span>Car For You!</span></h2>
+      <p>Welcome to our car rental service! We offer a wide selection of cars to choose from, and our easy-to-use online booking system makes it simple to reserve the car you need. Whether you’re traveling for business or pleasure, we have the perfect car for you.</p>
     </div>
     <div class="row"> 
       

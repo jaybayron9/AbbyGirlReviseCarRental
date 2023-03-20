@@ -13,16 +13,9 @@ if(isset($_POST['update']))
 $vimage=$_FILES["img3"]["name"];
 $id=intval($_GET['imgid']);
 move_uploaded_file($_FILES["img3"]["tmp_name"],"img/vehicleimages/".$_FILES["img3"]["name"]);
-$sql="update tblvehicles set Vimage3=:vimage where id=:id";
-$query = $dbh->prepare($sql);
-$query->bindParam(':vimage',$vimage,PDO::PARAM_STR);
-$query->bindParam(':id',$id,PDO::PARAM_STR);
-$query->execute();
+$sql= $dbh->query("update tblvehicles set Vimage3='{$vimage}' where id='{$id}'");
 
 $msg="Image updated successfully";
-
-
-
 }
 ?>
 
@@ -38,7 +31,7 @@ $msg="Image updated successfully";
 	<meta name="theme-color" content="#3e454c">
 	
 	<title>Car Rental Portal | Admin Update Image 3</title>
-
+	<link rel="shortcut icon" href="../assets/images/favicon-icon/favicon.png">
 	<!-- Font awesome -->
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<!-- Sandstone Bootstrap CSS -->
@@ -106,19 +99,15 @@ $msg="Image updated successfully";
 												<label class="col-sm-4 control-label">Current Image3</label>
 <?php 
 $id=intval($_GET['imgid']);
-$sql ="SELECT Vimage3 from tblvehicles where tblvehicles.id=:id";
-$query = $dbh -> prepare($sql);
-$query-> bindParam(':id', $id, PDO::PARAM_STR);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
+$sql2 = $dbh->query("SELECT Vimage3 from tblvehicles where tblvehicles.id='{$id}'");
 $cnt=1;
-if($query->rowCount() > 0)
+if($sql2->num_rows > 0)
 {
-foreach($results as $result)
+foreach($sql2 as $result)
 {	?>
 
 <div class="col-sm-8">
-<img src="img/vehicleimages/<?php echo htmlentities($result->Vimage3);?>" width="300" height="200" style="border:solid 1px #000">
+<img src="img/vehicleimages/<?php echo htmlentities($result['Vimage3']);?>" width="300" height="200" style="border:solid 1px #000">
 </div>
 <?php }}?>
 </div>
