@@ -1,21 +1,17 @@
 <?php
 session_start();
 include('includes/config.php');
-if(isset($_POST['login']))
-{
-$email=$_POST['username'];
-$password=md5($_POST['password']);
-$sql = $dbh->query("SELECT UserName,Password FROM admin WHERE UserName='{$email}' and Password='{$password}'");
-if($sql->num_rows > 0)
-{
-$_SESSION['alogin']=$_POST['username'];
-echo "<script type='text/javascript'> document.location = 'change-password.php'; </script>";
-} else{
+if (isset($_POST['login'])) {
+	$email = $_POST['username'];
+	$password = md5($_POST['password']);
+	$sql = $dbh->query("SELECT UserName,Password FROM admin WHERE UserName='{$email}' and Password='{$password}'");
+	if ($sql->num_rows > 0) {
+		$_SESSION['alogin'] = $_POST['username'];
+		echo "<script type='text/javascript'> document.location = 'change-password.php'; </script>";
+	} else {
 
-  echo "<script>alert('Invalid Details');</script>";
-
-}
-
+		echo "<script>alert('Invalid Details');</script>";
+	}
 }
 
 ?>
@@ -59,11 +55,11 @@ echo "<script type='text/javascript'> document.location = 'change-password.php';
 									<label for="" class="text-uppercase text-sm">Password</label>
 									<input type="password" placeholder="Password" name="password" class="form-control mb">
 
-									
+
 									<button class="btn btn-primary btn-block" name="login" type="submit">LOGIN</button>
-									
+
 									<div style="margin-top: 25px">
-										<a href="forgot-password.php" >Forgot Password?</a>
+										<a href="forgot-password.php">Forgot Password?</a>
 									</div>
 								</form>
 							</div>

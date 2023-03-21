@@ -114,11 +114,11 @@ if (strlen($_SESSION['alogin']) == 0) {
 														<div class="form-group">
 															<label class="col-sm-2 control-label">Vehicle Title<span style="color:red">*</span></label>
 															<div class="col-sm-4">
-																<input type="text" name="vehicletitle" class="form-control" value="<?php echo htmlentities($result['VehiclesTitle']) ?>" >
+																<input type="text" name="vehicletitle" class="form-control" value="<?php echo htmlentities($result['VehiclesTitle']) ?>">
 															</div>
 															<label class="col-sm-2 control-label">Select Brand<span style="color:red">*</span></label>
 															<div class="col-sm-4">
-																<select class="selectpicker" name="brandname" >
+																<select class="selectpicker" name="brandname">
 																	<option value="<?php echo htmlentities($result['bid']); ?>"><?php echo htmlentities($bdname = $result['BrandName']); ?> </option>
 																	<?php $ret = $dbh->query("select id,BrandName from tblbrands");
 																	if ($ret->num_rows > 0) {
@@ -140,18 +140,18 @@ if (strlen($_SESSION['alogin']) == 0) {
 														<div class="form-group">
 															<label class="col-sm-2 control-label">Vehical Overview<span style="color:red">*</span></label>
 															<div class="col-sm-10">
-																<textarea class="form-control" name="vehicalorcview" rows="3" ><?php echo htmlentities($result['VehiclesOverview']); ?></textarea>
+																<textarea class="form-control" name="vehicalorcview" rows="3"><?php echo htmlentities($result['VehiclesOverview']); ?></textarea>
 															</div>
 														</div>
 
 														<div class="form-group">
 															<label class="col-sm-2 control-label">Price Per Day(in USD)<span style="color:red">*</span></label>
 															<div class="col-sm-4">
-																<input type="text" name="priceperday" class="form-control" value="<?php echo htmlentities($result['PricePerDay']); ?>" >
+																<input type="text" name="priceperday" class="form-control" value="<?php echo htmlentities($result['PricePerDay']); ?>">
 															</div>
 															<label class="col-sm-2 control-label">Select Fuel Type<span style="color:red">*</span></label>
 															<div class="col-sm-4">
-																<select class="selectpicker" name="fueltype" >
+																<select class="selectpicker" name="fueltype">
 																	<option value="<?php echo htmlentities($results['FuelType']); ?>"> <?php echo htmlentities($result['FuelType']); ?> </option>
 
 																	<option value="Petrol">Petrol</option>
@@ -165,11 +165,11 @@ if (strlen($_SESSION['alogin']) == 0) {
 														<div class="form-group">
 															<label class="col-sm-2 control-label">Model Year<span style="color:red">*</span></label>
 															<div class="col-sm-4">
-																<input type="text" name="modelyear" class="form-control" value="<?php echo htmlentities($result['ModelYear']); ?>" >
+																<input type="text" name="modelyear" class="form-control" value="<?php echo htmlentities($result['ModelYear']); ?>">
 															</div>
 															<label class="col-sm-2 control-label">Seating Capacity<span style="color:red">*</span></label>
 															<div class="col-sm-4">
-																<input type="text" name="seatingcapacity" class="form-control" value="<?php echo htmlentities($result['SeatingCapacity']); ?>" >
+																<input type="text" name="seatingcapacity" class="form-control" value="<?php echo htmlentities($result['SeatingCapacity']); ?>">
 															</div>
 														</div>
 														<div class="hr-dashed"></div>

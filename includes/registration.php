@@ -1,52 +1,46 @@
 <?php
 //error_reporting(0);
-if(isset($_POST['signup']))
-{
-$fname=$_POST['fullname'];
-$email=$_POST['emailid']; 
-$mobile=$_POST['mobileno'];
-$password=md5($_POST['password']); 
-$sql= $dbh->query("INSERT INTO  tblusers(FullName,EmailId,ContactNo,Password) VALUES('{$fname}','{$email}','{$mobile}','{$password}')");
-$lastInsertId = $dbh->query("SELECT LAST_INSERT_ID() FROM tblusers");
-if($lastInsertId)
-{
-echo "<script>alert('Registration successfull. Now you can login');</script>";
-}
-else 
-{
-echo "<script>alert('Something went wrong. Please try again');</script>";
-}
+if (isset($_POST['signup'])) {
+  $fname = $_POST['fullname'];
+  $email = $_POST['emailid'];
+  $mobile = $_POST['mobileno'];
+  $password = md5($_POST['password']);
+  $sql = $dbh->query("INSERT INTO  tblusers(FullName,EmailId,ContactNo,Password) VALUES('{$fname}','{$email}','{$mobile}','{$password}')");
+  $lastInsertId = $dbh->query("SELECT LAST_INSERT_ID() FROM tblusers");
+  if ($lastInsertId) {
+    echo "<script>alert('Registration successfull. Now you can login');</script>";
+  } else {
+    echo "<script>alert('Something went wrong. Please try again');</script>";
+  }
 }
 
 ?>
 
 
 <script>
-function checkAvailability() {
-$("#loaderIcon").show();
-jQuery.ajax({
-url: "check_availability.php",
-data:'emailid='+$("#emailid").val(),
-type: "POST",
-success:function(data){
-$("#user-availability-status").html(data);
-$("#loaderIcon").hide();
-},
-error:function (){}
-});
-}
+  function checkAvailability() {
+    $("#loaderIcon").show();
+    jQuery.ajax({
+      url: "check_availability.php",
+      data: 'emailid=' + $("#emailid").val(),
+      type: "POST",
+      success: function(data) {
+        $("#user-availability-status").html(data);
+        $("#loaderIcon").hide();
+      },
+      error: function() {}
+    });
+  }
 </script>
 <script type="text/javascript">
-function valid()
-{
-if(document.signup.password.value!= document.signup.confirmpassword.value)
-{
-alert("Password and Confirm Password Field do not match  !!");
-document.signup.confirmpassword.focus();
-return false;
-}
-return true;
-}
+  function valid() {
+    if (document.signup.password.value != document.signup.confirmpassword.value) {
+      alert("Password and Confirm Password Field do not match  !!");
+      document.signup.confirmpassword.focus();
+      return false;
+    }
+    return true;
+  }
 </script>
 <div class="modal fade" id="signupform">
   <div class="modal-dialog" role="document">
@@ -59,16 +53,16 @@ return true;
         <div class="row">
           <div class="signup_wrap">
             <div class="col-md-12 col-sm-6">
-              <form  method="post" name="signup" onSubmit="return valid();">
+              <form method="post" name="signup" onSubmit="return valid();">
                 <div class="form-group">
                   <input type="text" class="form-control" maxlength="40" name="fullname" placeholder="Full Name" required="required">
                 </div>
-                      <div class="form-group">
+                <div class="form-group">
                   <input type="text" class="form-control" name="mobileno" placeholder="Mobile Number" maxlength="10" required="required">
                 </div>
                 <div class="form-group">
                   <input type="email" class="form-control" maxlength="40" name="emailid" id="emailid" onBlur="checkAvailability()" placeholder="Email Address" required="required">
-                   <span id="user-availability-status" style="font-size:12px;"></span> 
+                  <span id="user-availability-status" style="font-size:12px;"></span>
                 </div>
                 <div class="form-group">
                   <input type="password" class="form-control" maxlength="40" name="password" placeholder="Password" required="required">
@@ -85,7 +79,7 @@ return true;
                 </div>
               </form>
             </div>
-            
+
           </div>
         </div>
       </div>

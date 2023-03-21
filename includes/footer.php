@@ -1,25 +1,19 @@
 <?php
-if(isset($_POST['emailsubscibe']))
-{
-$subscriberemail=$_POST['subscriberemail'];
-$sql = $dbh->query("SELECT SubscriberEmail FROM tblsubscribers WHERE SubscriberEmail='{$subscriberemail}'");
-$cnt=1;
-if($sql -> num_rows > 0)
-{
-echo "<script>alert('Already Subscribed.');</script>";
-}
-else{
-$sql=$dbh->query("INSERT INTO  tblsubscribers(SubscriberEmail) VALUES('{$subscriberemail}')");
-$lastInsertId = $dbh->query("SELECT lastInsertId() FROM tblsubscribers");
-if($lastInsertId)
-{
-echo "<script>alert('Subscribed successfully.');</script>";
-}
-else
-{
-echo "<script>alert('Something went wrong. Please try again');</script>";
-}
-}
+if (isset($_POST['emailsubscibe'])) {
+  $subscriberemail = $_POST['subscriberemail'];
+  $sql = $dbh->query("SELECT SubscriberEmail FROM tblsubscribers WHERE SubscriberEmail='{$subscriberemail}'");
+  $cnt = 1;
+  if ($sql->num_rows > 0) {
+    echo "<script>alert('Already Subscribed.');</script>";
+  } else {
+    $sql = $dbh->query("INSERT INTO  tblsubscribers(SubscriberEmail) VALUES('{$subscriberemail}')");
+    $lastInsertId = $dbh->query("SELECT lastInsertId() FROM tblsubscribers");
+    if ($lastInsertId) {
+      echo "<script>alert('Subscribed successfully.');</script>";
+    } else {
+      echo "<script>alert('Something went wrong. Please try again');</script>";
+    }
+  }
 }
 ?>
 
@@ -33,11 +27,11 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
           <ul>
 
 
-          <li><a href="page.php?type=aboutus">About Us</a></li>
+            <li><a href="page.php?type=aboutus">About Us</a></li>
             <li><a href="page.php?type=faqs">FAQs</a></li>
             <li><a href="page.php?type=privacy">Privacy</a></li>
-          <li><a href="page.php?type=terms">Terms of use</a></li>
-               <li><a href="admin/">Admin Login</a></li>
+            <li><a href="page.php?type=terms">Terms of use</a></li>
+            <li><a href="admin/">Admin Login</a></li>
           </ul>
         </div>
 

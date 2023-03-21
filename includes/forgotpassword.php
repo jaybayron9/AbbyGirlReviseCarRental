@@ -1,32 +1,27 @@
 <?php
-if(isset($_POST['update']))
-  {
-$email=$_POST['email'];
-$mobile=$_POST['mobile'];
-$newpassword=md5($_POST['newpassword']);
-$sql = $dbh->query("SELECT EmailId FROM tblusers WHERE EmailId='{$email}' and ContactNo='{$mobile}'");
-if($sql -> num_rows > 0)
-{
-$con = $dbh->query("update tblusers set Password='{$newpassword}' where EmailId='{$email}' and ContactNo='{$mobile}'");
-echo "<script>alert('Your Password succesfully changed');</script>";
-}
-else {
-echo "<script>alert('Email id or Mobile no is invalid');</script>"; 
-}
+if (isset($_POST['update'])) {
+  $email = $_POST['email'];
+  $mobile = $_POST['mobile'];
+  $newpassword = md5($_POST['newpassword']);
+  $sql = $dbh->query("SELECT EmailId FROM tblusers WHERE EmailId='{$email}' and ContactNo='{$mobile}'");
+  if ($sql->num_rows > 0) {
+    $con = $dbh->query("update tblusers set Password='{$newpassword}' where EmailId='{$email}' and ContactNo='{$mobile}'");
+    echo "<script>alert('Your Password succesfully changed');</script>";
+  } else {
+    echo "<script>alert('Email id or Mobile no is invalid');</script>";
+  }
 }
 
 ?>
-  <script type="text/javascript">
-function valid()
-{
-if(document.chngpwd.newpassword.value!= document.chngpwd.confirmpassword.value)
-{
-alert("New Password and Confirm Password Field do not match  !!");
-document.chngpwd.confirmpassword.focus();
-return false;
-}
-return true;
-}
+<script type="text/javascript">
+  function valid() {
+    if (document.chngpwd.newpassword.value != document.chngpwd.confirmpassword.value) {
+      alert("New Password and Confirm Password Field do not match  !!");
+      document.chngpwd.confirmpassword.focus();
+      return false;
+    }
+    return true;
+  }
 </script>
 <div class="modal fade" id="forgotpassword">
   <div class="modal-dialog" role="document">
@@ -44,13 +39,13 @@ return true;
                 <div class="form-group">
                   <input type="email" name="email" maxlength="40" class="form-control" placeholder="Your Email address*" required="">
                 </div>
-  <div class="form-group">
+                <div class="form-group">
                   <input type="text" name="mobile" maxlength="40" class="form-control" placeholder="Your Reg. Mobile*" required="">
                 </div>
-  <div class="form-group">
+                <div class="form-group">
                   <input type="password" name="newpassword" maxlength="40" class="form-control" placeholder="New Password*" required="">
                 </div>
-  <div class="form-group">
+                <div class="form-group">
                   <input type="password" name="confirmpassword" maxlength="40" class="form-control" placeholder="Confirm Password*" required="">
                 </div>
                 <div class="form-group">
