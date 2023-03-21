@@ -66,7 +66,7 @@ if (isset($_POST['emailsubscibe'])) {
           </div>
         </div>
         <div class="col-md-6 col-md-pull-6">
-          <p class="copy-right">Copyright &copy; 2023 Car Rental Portal. Brought To You By <a href="https://code-projects.org/">AbbyGirl</a></p>
+          <p class="copy-right">Copyright &copy; 2023 Car Rental Portal. Brought To You By <a href="https://code-projects.org/">AbeGirl</a></p>
         </div>
       </div>
     </div>
