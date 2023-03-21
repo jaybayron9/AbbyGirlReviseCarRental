@@ -1,16 +1,56 @@
 <?php
 session_start();
-include('includes/config.php');
-if (isset($_POST['login'])) {
-    $email = $_POST['username'];
-    $password = md5($_POST['password']);
-    $sql = $dbh->query("SELECT UserName,Password FROM admin WHERE UserName='{$email}' and Password='{$password}'");
-    if ($sql->num_rows > 0) {
-        $_SESSION['alogin'] = $_POST['username'];
-        echo "<script type='text/javascript'> document.location = 'change-password.php'; </script>";
-    } else {
 
-        echo "<script>alert('Invalid Details');</script>";
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
+include('includes/config.php');
+if (isset($_POST['send'])) {
+    $email = $_POST['email'];
+    $sql = $dbh->query("SELECT * FROM admin WHERE email='{$email}'");
+    if ($sql->num_rows > 0) {
+        $id = uniqid();
+        $sql1 = $dbh->query("UPDATE admin SET token='{$id}' WHERE email='{$email}'");
+        $url = 'http://localhost/GitHub/AbbyGirlReviseCarRental/admin/request-change-pass.php?token=';
+
+        $send_to = $_POST['email'];
+        $subject = 'AbeGurl Car Rental | Password Reset Request';
+        $body = "You have requested to reset your password. <br><br>
+            Please click the link below to reset your password:<br><br>
+            $url" . $id . "<br>
+            If you did not make this request, please ignore this email.";
+
+        // Email instance to send email
+        $mail = new PHPMailer(true); // Ignore Erros
+
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'dclinic139@gmail.com';
+        $mail->Password = 'sxmokpcoqsgbkayu';
+        $mail->SMTPSecure = 'ssl';
+        $mail->Port = 465;
+
+        $mail->setFrom('dclinic139@gmail.com');
+
+        $mail->addAddress($email); // Send to
+
+        $mail->isHTML(true);
+
+        $mail->Subject = $subject;
+        $mail->Body = $body;
+
+        if ($mail->send()) {
+            echo '<script>alert("Email sent successfully")</script>';
+        } else {
+            echo '<script>alert("Email sending failed")</script>';
+        }
+    } else {
+        echo '<script>alert("Email not found")</script>';
     }
 }
 
@@ -58,7 +98,7 @@ if (isset($_POST['login'])) {
                                     <label for="" class="text-uppercase text-sm">Email</label>
                                     <input type="email" placeholder="example@gmail.com" name="email" class="form-control mb">
 
-                                    <button class="btn btn-primary btn-block" name="login" type="submit">SEND</button>
+                                    <button class="btn btn-primary btn-block" name="send" type="submit">SEND</button>
 
                                     <div style="margin-top: 25px">
                                         <a href="index.php">I remember!</a>
