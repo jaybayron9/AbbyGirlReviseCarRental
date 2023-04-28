@@ -4,13 +4,18 @@ if (isset($_POST['signup'])) {
   $fname = $_POST['fullname'];
   $email = $_POST['emailid'];
   $mobile = $_POST['mobileno'];
-  $password = md5($_POST['password']);
-  $sql = $dbh->query("INSERT INTO  tblusers(FullName,EmailId,ContactNo,Password) VALUES('{$fname}','{$email}','{$mobile}','{$password}')");
-  $lastInsertId = $dbh->query("SELECT LAST_INSERT_ID() FROM tblusers");
-  if ($lastInsertId) {
-    echo "<script>alert('Registration successfull. Now you can login');</script>";
+
+  if ($_POST['confirmpassword'] == $_POST['password']) {
+    $password = md5($_POST['password']);
+    $sql = $dbh->query("INSERT INTO  tblusers(FullName,EmailId,ContactNo,Password) VALUES('{$fname}','{$email}','{$mobile}','{$password}')");
+    $lastInsertId = $dbh->query("SELECT LAST_INSERT_ID() FROM tblusers");
+    if ($lastInsertId) {
+      echo "<script>alert('Registration successfull. Now you can login');</script>";
+    } else {
+      echo "<script>alert('Something went wrong. Please try again');</script>";
+    }
   } else {
-    echo "<script>alert('Something went wrong. Please try again');</script>";
+    echo "<script>alert('Password and Confirm Password field do not match');</script>";
   }
 }
 
@@ -58,7 +63,7 @@ if (isset($_POST['signup'])) {
                   <input type="text" class="form-control" maxlength="40" name="fullname" placeholder="Full Name" required="required">
                 </div>
                 <div class="form-group">
-                  <input type="text" class="form-control" name="mobileno" placeholder="Mobile Number" maxlength="10" required="required">
+                  <input type="text" class="form-control myInput" name="mobileno" placeholder="Mobile Number" maxlength="11" required="required">
                 </div>
                 <div class="form-group">
                   <input type="email" class="form-control" maxlength="40" name="emailid" id="emailid" onBlur="checkAvailability()" placeholder="Email Address" required="required">

@@ -15,13 +15,12 @@ if (isset($_POST['send'])) {
     if ($sql->num_rows > 0) {
         $id = uniqid();
         $sql1 = $dbh->query("UPDATE admin SET token='{$id}' WHERE email='{$email}'");
-        $url = 'http://localhost/GitHub/AbbyGirlReviseCarRental/admin/request-change-pass.php?token=';
+        $url = "<a href='abegurlcarrental.rf.gd/admin/request-change-pass.php?token={$id}'>Here</a>";
 
         $send_to = $_POST['email'];
         $subject = 'AbeGurl Car Rental | Password Reset Request';
         $body = "You have requested to reset your password. <br><br>
-            Please click the link below to reset your password:<br><br>
-            $url" . $id . "<br>
+            Please click $url to reset your password:<br><br>
             If you did not make this request, please ignore this email.";
 
         // Email instance to send email

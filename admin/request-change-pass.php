@@ -63,10 +63,10 @@ if (isset($_POST['change_pass'])) {
 								<form method="post">
 
 									<label for="" class="text-uppercase text-sm">New Password</label>
-									<input type="password" placeholder="**********" name="newpassword" class="form-control mb">
+									<input type="password" placeholder="**********" name="newpassword" class="form-control mb" required>
 
 									<label for="" class="text-uppercase text-sm">Retype-Password</label>
-									<input type="password" placeholder="***********" name="retypepassword" class="form-control mb">
+									<input type="password" placeholder="***********" name="retypepassword" class="form-control mb" required>
 
 									
 									<button class="btn btn-primary btn-block" name="change_pass" type="submit">SUBMIT</button>

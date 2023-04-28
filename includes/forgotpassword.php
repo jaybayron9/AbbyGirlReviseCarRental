@@ -40,7 +40,7 @@ if (isset($_POST['update'])) {
                   <input type="email" name="email" maxlength="40" class="form-control" placeholder="Your Email address*" required="">
                 </div>
                 <div class="form-group">
-                  <input type="text" name="mobile" maxlength="40" class="form-control" placeholder="Your Reg. Mobile*" required="">
+                  <input type="text" name="mobile" maxlength="40" class="form-control myInput" placeholder="Your Reg. Mobile*" required="">
                 </div>
                 <div class="form-group">
                   <input type="password" name="newpassword" maxlength="40" class="form-control" placeholder="New Password*" required="">

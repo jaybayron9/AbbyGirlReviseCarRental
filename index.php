@@ -191,9 +191,6 @@ error_reporting(0);
               </div>
           <?php }
           } ?>
-
-
-
         </div>
       </div>
     </div>
@@ -236,6 +233,23 @@ error_reporting(0);
   <script src="assets/js/slick.min.js"></script>
   <script src="assets/js/owl.carousel.min.js"></script>
 
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.myInput').on('keydown keyup', function(event) {
+            var input = $(this);
+            var value = input.val();
+
+            value = value.replace(/[^0-9\.]/g, '');
+
+            var decimalCount = (value.match(/\./g) || []).length;
+            if (decimalCount > 1) {
+                value = value.replace(/\.+$/, '');
+            }
+
+            input.val(value);
+        });
+    });
+  </script>
 </body>
 
 <!-- Mirrored from themes.webmasterdriver.net/carforyou/demo/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Jun 2017 07:22:11 GMT -->

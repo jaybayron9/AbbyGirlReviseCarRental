@@ -101,11 +101,16 @@ if (isset($_GET['aeid'])) {
 						<!-- Zero Configuration Table -->
 						<div class="panel panel-default">
 							<div class="panel-heading">Bookings Info</div>
+							<input type="date" name="sort-date" id="search_date" style="margin: 10px;">
+							<button id="print" style="font-weight: bold;">Print</button>
 							<div class="panel-body">
 								<?php if ($error) { ?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } else if ($msg) { ?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php } ?>
+
+
 								<table id="zctb" class="display table table-striped table-bordered table-hover" cellspacing="0" width="100%">
 									<thead>
 										<tr>
+											<th></th>
 											<th>#</th>
 											<th>Name</th>
 											<th>Vehicle</th>
@@ -114,30 +119,20 @@ if (isset($_GET['aeid'])) {
 											<th>Message</th>
 											<th>Status</th>
 											<th>Posting date</th>
+											<th>Time</th>
 											<th>Action</th>
 										</tr>
 									</thead>
-									<tfoot>
-										<tr>
-											<th>#</th>
-											<th>Name</th>
-											<th>Vehicle</th>
-											<th>From Date</th>
-											<th>To Date</th>
-											<th>Message</th>
-											<th>Status</th>
-											<th>Posting date</th>
-											<th>Action</th>
-										</tr>
-									</tfoot>
 									<tbody>
 
-										<?php $sql = "SELECT tblusers.FullName,tblbrands.BrandName,tblvehicles.VehiclesTitle,tblbooking.FromDate,tblbooking.ToDate,tblbooking.message,tblbooking.VehicleId as vid,tblbooking.Status,tblbooking.PostingDate,tblbooking.id  from tblbooking join tblvehicles on tblvehicles.id=tblbooking.VehicleId join tblusers on tblusers.EmailId=tblbooking.userEmail join tblbrands on tblvehicles.VehiclesBrand=tblbrands.id  ";
+										<?php $sql = "SELECT tblusers.FullName,tblbrands.BrandName,tblvehicles.VehiclesTitle,tblbooking.FromDate,tblbooking.ToDate,tblbooking.message,tblbooking.VehicleId as vid,tblbooking.Status,tblbooking.PostingDate,tblbooking.id  from tblbooking join tblvehicles on tblvehicles.id=tblbooking.VehicleId join tblusers on tblusers.EmailId=tblbooking.userEmail join tblbrands on tblvehicles.VehiclesBrand=tblbrands.id ORDER BY tblbooking.Status";
 										$results = $dbh->query($sql);
 										$cnt = 1;
 										if ($results->num_rows > 0) {
 											foreach ($results as $result) {				?>
 												<tr>
+													<td> <input type="checkbox" data-row-data="<?= $result['id'] ?>" id="" class="select" value="<?= $result['id'] ?>">
+													</td>
 													<td><?php echo htmlentities($cnt); ?></td>
 													<td><?php echo htmlentities($result['FullName']); ?></td>
 													<td><a href="edit-vehicle.php?id=<?php echo htmlentities($result->vid); ?>"><?php echo htmlentities($result['BrandName']); ?> , <?php echo htmlentities($result['VehiclesTitle']); ?></td>
@@ -153,13 +148,13 @@ if (isset($_GET['aeid'])) {
 															echo htmlentities('Cancelled');
 														}
 														?></td>
-													<td><?php echo htmlentities($result['PostingDate']); ?></td>
-													<td><a href="manage-bookings.php?aeid=<?php echo htmlentities($result['id']); ?>" onclick="return confirm('Do you really want to Confirm this booking')"> Confirm</a> /
-
-
-														<a href="manage-bookings.php?eid=<?php echo htmlentities($result['id']); ?>" onclick="return confirm('Do you really want to Cancel this Booking')"> Cancel</a>
+													<td><?= date('Y-m-d', strtotime($result['PostingDate'])) ?></td>
+													<td><?= date('g: i a', strtotime($result['PostingDate'])) ?></td>
+													<td>
+														<a href="manage-bookings.php?aeid=<?php echo htmlentities($result['id']); ?>" onclick="return confirm('Do you really want to Confirm this booking')"> Confirm</a> /
+														<a href="manage-bookings.php?eid=<?php echo htmlentities($result['id']); ?>" onclick="return confirm('Do you really want to Cancel this Booking')"> Cancel</a> /
+														<a href="#">Print</a>
 													</td>
-
 												</tr>
 										<?php $cnt = $cnt + 1;
 											}
@@ -183,15 +178,88 @@ if (isset($_GET['aeid'])) {
 	</div>
 
 	<!-- Loading Scripts -->
-	<script src="js/jquery.min.js"></script>
+	<!-- <script src="js/jquery.min.js"></script> -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="js/bootstrap-select.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
 	<script src="js/dataTables.bootstrap.min.js"></script>
 	<script src="js/Chart.min.js"></script>
 	<script src="js/fileinput.js"></script>
 	<script src="js/chartData.js"></script>
 	<script src="js/main.js"></script>
+	<script>
+		$(document).ready(function() {
+			var table = $('#zctb').DataTable({
+				"lengthMenu": [10, 25, 50, 100, 200, 500, 1000],
+				"initComplete": function() {
+					$('div.dataTables_filter input').attr('maxlength', 20);
+				},
+				columns: [
+					{ title: '<input type="checkbox" name="" id="selectAll">' },
+					{ title: '#' },
+					{ title: 'Name' },
+					{ title: 'Vehicle' },
+					{ title: 'From Date' },
+					{ title: 'To Date' },
+					{ title: 'Message' },
+					{ title: 'Status' },
+					{ title: 'Posting date' },
+					{ title: 'Time' },
+					{ title: 'Action' },
+				]
+			});
+
+			$.fn.dataTable.ext.search.push(
+				function(settings, data, dataIndex) {
+					var searchDate = $('#search_date').val();
+					var date = data[8]; // assuming the date is in the first column
+					if (searchDate === '') {
+						return true;
+					}
+					if (date === searchDate) {
+						return true;
+					}
+					return false;
+				}
+			);
+
+			$('#search_date').on('change', function() {
+				table.draw();
+			});
+
+			$('#selectAll').click(function() {
+				$('.select').not(this).prop('checked', this.checked);
+			});
+
+			$('#print').click(function() {
+				var checkboxes = $('.select');
+				var rowData = [];
+				checkboxes.each(function() {
+					if ($(this).is(':checked')) {
+						var data = $(this).data('row-data');
+						rowData.push(data);
+					}
+				});
+
+				$.ajax({
+					url: 'print.php?a=1',
+					type: 'POST',
+					data: {
+						rowData: rowData,
+						date: $('#search_date').val()
+					},
+					success: function(response) {
+						if (response !== '1') {
+							window.open('print.php?a=2', '_blank');
+						} else {
+							alert('Please select row(s) to print.');
+						}
+					}
+				});
+			})
+		})
+	</script>
 </body>
 
 </html>

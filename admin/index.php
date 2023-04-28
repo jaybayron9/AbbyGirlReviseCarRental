@@ -7,9 +7,8 @@ if (isset($_POST['login'])) {
 	$sql = $dbh->query("SELECT UserName,Password FROM admin WHERE UserName='{$email}' and Password='{$password}'");
 	if ($sql->num_rows > 0) {
 		$_SESSION['alogin'] = $_POST['username'];
-		echo "<script type='text/javascript'> document.location = 'change-password.php'; </script>";
+		echo "<script type='text/javascript'> document.location = 'dashboard.php'; </script>";
 	} else {
-
 		echo "<script>alert('Invalid Details');</script>";
 	}
 }

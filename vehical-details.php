@@ -13,6 +13,7 @@ if (isset($_POST['submit'])) {
   $lastInsertId = $dbh->query("SELECT LAST_INSERT_ID()");
   if ($lastInsertId) {
     echo "<script>alert('Booking successfull.');</script>";
+    header('location: my-booking.php');
   } else {
     echo "<script>alert('Something went wrong. Please try again');</script>";
   }
@@ -304,10 +305,10 @@ if (isset($_POST['submit'])) {
                 </div>
                 <form method="post">
                   <div class="form-group">
-                    <input type="text" class="form-control" name="fromdate" placeholder="From Date(dd/mm/yyyy)" required>
+                    <input type="date" class="form-control myDate" name="fromdate" placeholder="From Date(dd/mm/yyyy)" required>
                   </div>
                   <div class="form-group">
-                    <input type="text" class="form-control" name="todate" placeholder="To Date(dd/mm/yyyy)" required>
+                    <input type="date" class="form-control myDate" name="todate" placeholder="To Date(dd/mm/yyyy)" required>
                   </div>
                   <div class="form-group">
                     <textarea rows="4" class="form-control" name="message" placeholder="Message" required></textarea>
@@ -394,7 +395,11 @@ if (isset($_POST['submit'])) {
       <script src="assets/js/bootstrap-slider.min.js"></script>
       <script src="assets/js/slick.min.js"></script>
       <script src="assets/js/owl.carousel.min.js"></script>
-
+      <script type="text/javascript">
+        $(document).ready(function() {
+          $('.myDate').attr('min', new Date().toISOString().split("T")[0]);
+        });
+      </script>
 </body>
 
 </html>

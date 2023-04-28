@@ -48,6 +48,7 @@
       <div class=" " style="margin-right: 60px">
         <div class="user_login">
           <ul>
+          <?php if ($_SESSION['login']) { ?>
             <li class="dropdown"> <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true"></i>
                 <?php
                 $email = $_SESSION['login'];
@@ -76,6 +77,7 @@
                 <?php } ?>
               </ul>
             </li>
+            <?php } ?>
           </ul>
         </div>
         <div class="header_search">
