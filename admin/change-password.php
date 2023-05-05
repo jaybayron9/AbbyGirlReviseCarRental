@@ -2,17 +2,34 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
+
+$infoUser = $dbh->query("SELECT * FROM admin WHERE UserName='{$_SESSION['alogin']}'");
+
 if (strlen($_SESSION['alogin']) == 0) {
 	header('location:index.php');
 } else {
 	// Code for change password	
 	if (isset($_POST['submit'])) {
+		$email = $_POST['email'];
+		$no = $_POST['no'];
+		$hint = $_POST['hint'];
+		$answer = $_POST['answer'];
 		$password = md5($_POST['password']);
 		$newpassword = md5($_POST['newpassword']);
 		$username = $_SESSION['alogin'];
 		$sql = $dbh->query("SELECT Password FROM admin WHERE UserName='{$username}' and Password='{$password}'");
 		if ($sql->num_rows > 0) {
-			$con = $dbh->query("update admin set Password='{$newpassword}' where UserName='{$username}'");
+			$con = $dbh->query("
+					update admin 
+					set 
+						Email = '{$email}',
+						mobileNo = '{$no}',
+						Password='{$newpassword}', 
+						hint = '{$hint}', 
+						answer = '$answer' 
+					where 
+						UserName='{$username}'
+				");
 			$msg = "Your Password succesfully changed";
 		} else {
 			$error = "Your current password is not valid.";
@@ -101,9 +118,39 @@ if (strlen($_SESSION['alogin']) == 0) {
 										<div class="panel-heading">Form fields</div>
 										<div class="panel-body">
 											<form method="post" name="chngpwd" class="form-horizontal" onSubmit="return valid();">
-
-
 												<?php if ($error) { ?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } else if ($msg) { ?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php } ?>
+
+												<div class="form-group">
+													<label class="col-sm-4 control-label">Email</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control" name="email" id="email" value="<?= mysqli_fetch_array($infoUser)['email'] ?>" required>
+													</div>
+												</div>
+
+												<div class="form-group">
+													<label class="col-sm-4 control-label">Mobile no.</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control" name="no" id="no" value="<?= mysqli_fetch_array($infoUser)['mobileNo'] ?>" required>
+													</div>
+												</div>
+												<div class="hr-dashed"></div>
+												
+												<div class="form-group">
+													<label class="col-sm-4 control-label">Hint</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control" name="hint" id="hint" value="<?= mysqli_fetch_array($infoUser)['hint'] ?>" required>
+													</div>
+												</div>
+												<div class="hr-dashed"></div>
+
+												<div class="form-group">
+													<label class="col-sm-4 control-label">Answer</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control" name="answer" id="answer" value="<?= mysqli_fetch_array($infoUser)['answer'] ?>" required>
+													</div>
+												</div>
+												<div class="hr-dashed"></div>
+												
 												<div class="form-group">
 													<label class="col-sm-4 control-label">Current Password</label>
 													<div class="col-sm-8">

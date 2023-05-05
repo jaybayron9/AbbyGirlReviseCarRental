@@ -3,27 +3,36 @@ session_start();
 include('includes/config.php');
 
 $show = false;
-$token = $_GET['token'];
-$checkToken = $dbh->query("SELECT * FROM admin WHERE token='{$token}'");
-if (!$checkToken->num_rows > 0) {
+$id = isset($_GET['id']) ? $_GET['id'] : false;
+$userAdmin = $dbh->query("SELECT * FROM admin WHERE id='{$id}'");
+if (!$userAdmin->num_rows > 0) {
 	header("location: 403.php");
 } 
 
 if (isset($_POST['change_pass'])) {
+	$answer = $_POST['answer'];
 	$newpassword = $_POST['newpassword'];
 	$retypepassword = $_POST['retypepassword'];
+	
+	$checkAnswer = $dbh->query("SELECT * FROM admin WHERE id='{$id}' AND answer='{$answer}'");
 
-	if ($newpassword === $retypepassword) {
-		$password = md5($newpassword);
-		$updatepass = $dbh->query("UPDATE admin SET password='{$password}' WHERE token='{$token}'");
-		if ($updatepass) {
-			echo '<script>alert("Password changed successfully, You can now login to your account with your new password!")</script>';
-			$show = true;
+	if ($checkAnswer->num_rows > 0) {
+		$correctAnswer = $answer;
+
+		if ($newpassword == $retypepassword) {
+			$hashed_password = md5($newpassword);
+			$update = $dbh->query("UPDATE admin SET password='{$hashed_password}' WHERE id='{$id}'");
+			if ($update) {
+				$show = true;
+				echo '<script>alert("Password changed successfully")</script>';
+			} else {
+				$alert = 'Failed to change password';
+			}
 		} else {
-			echo '<script>alert("Password change failed")</script>';
+			$alert = 'Password does not match';
 		}
 	} else {
-		echo '<script>alert("Password does not match")</script>';
+		$alert = 'Incorrect answer';
 	}
 }
 
@@ -59,14 +68,20 @@ if (isset($_POST['change_pass'])) {
 					<div class="col-md-6 col-md-offset-3">
 						<h1 class="text-center text-bold text-light mt-4x">Change Your Password</h1>
 						<div class="well row pt-2x pb-3x bk-light">
+							<center><span style="color: red;"><?= isset($alert) ? $alert : '' ?></span></center>
 							<div class="col-md-8 col-md-offset-2">
 								<form method="post">
+									<label for="hint" class="text-uppercase text-sm">Hint</label>
+									<input type="text" id="hint" name="hint" value="<?= mysqli_fetch_array($userAdmin)['hint'] ?>" class="form-control mb" disabled>
+
+									<label for="" class="text-uppercase text-sm">Answer</label>
+									<input type="text" placeholder="Enter answer" value="<?= isset($correctAnswer) ? $correctAnswer : '' ?>" maxlength="30" name="answer" class="form-control mb" required>
 
 									<label for="" class="text-uppercase text-sm">New Password</label>
-									<input type="password" placeholder="**********" name="newpassword" class="form-control mb" required>
+									<input type="password" placeholder="**********" maxlength="30" name="newpassword" class="form-control mb" required>
 
 									<label for="" class="text-uppercase text-sm">Retype-Password</label>
-									<input type="password" placeholder="***********" name="retypepassword" class="form-control mb" required>
+									<input type="password" placeholder="***********" maxlength="30" name="retypepassword" class="form-control mb" required>
 
 									
 									<button class="btn btn-primary btn-block" name="change_pass" type="submit">SUBMIT</button>

@@ -11,45 +11,14 @@ require 'PHPMailer/src/SMTP.php';
 include('includes/config.php');
 if (isset($_POST['send'])) {
     $email = $_POST['email'];
-    $sql = $dbh->query("SELECT * FROM admin WHERE email='{$email}'");
-    if ($sql->num_rows > 0) {
-        $id = uniqid();
-        $sql1 = $dbh->query("UPDATE admin SET token='{$id}' WHERE email='{$email}'");
-        $url = "<a href='abegurlcarrental.rf.gd/admin/request-change-pass.php?token={$id}'>Here</a>";
+    $contactNo = $_POST['contactNo'];
+    $check = $dbh->query("SELECT * FROM admin WHERE Email='{$email}' AND mobileNo='{$contactNo}'");
 
-        $send_to = $_POST['email'];
-        $subject = 'AbeGurl Car Rental | Password Reset Request';
-        $body = "You have requested to reset your password. <br><br>
-            Please click $url to reset your password:<br><br>
-            If you did not make this request, please ignore this email.";
-
-        // Email instance to send email
-        $mail = new PHPMailer(true); // Ignore Erros
-
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'dclinic139@gmail.com';
-        $mail->Password = 'sxmokpcoqsgbkayu';
-        $mail->SMTPSecure = 'ssl';
-        $mail->Port = 465;
-
-        $mail->setFrom('dclinic139@gmail.com');
-
-        $mail->addAddress($email); // Send to
-
-        $mail->isHTML(true);
-
-        $mail->Subject = $subject;
-        $mail->Body = $body;
-
-        if ($mail->send()) {
-            echo '<script>alert("Email sent successfully")</script>';
-        } else {
-            echo '<script>alert("Email sending failed")</script>';
-        }
+    if ($check->num_rows > 0) {
+        $id = mysqli_fetch_array($check)['id'];
+        header("location: request-change-pass.php?id={$id}");
     } else {
-        echo '<script>alert("Email not found")</script>';
+        $alert = 'Invalid email or contact number';
     }
 }
 
@@ -90,14 +59,20 @@ if (isset($_POST['send'])) {
                                 <form method="post">
                                     <center>
                                         <p style="font-size: 15px; font-weight:18px;">
-                                            We get it, stuff happens. Just enter your email address
-                                            below and we'll send you a link to reset your password!
+                                        We get it, stuff happens. Just enter your email address below and and answer security question to reset your password.
                                         </p>
                                     </center>
-                                    <label for="" class="text-uppercase text-sm">Email</label>
-                                    <input type="email" placeholder="example@gmail.com" name="email" class="form-control mb">
+                                    <span style="color: red;"><?= isset($alert) ? $alert : '' ?></span>
 
-                                    <button class="btn btn-primary btn-block" name="send" type="submit">SEND</button>
+                                    <div>
+                                        <label for="" class="text-uppercase text-sm">Email</label>
+                                        <input type="email" placeholder="example@gmail.com" name="email" class="form-control mb" required>
+                                    </div>
+
+                                    <label for="" class="text-uppercase text-sm">Contact No.</label>
+                                    <input type="text" placeholder="09123456789" name="contactNo" class="form-control mb" required>
+
+                                    <button class="btn btn-primary btn-block" name="send" type="submit">SUBMIT</button>
 
                                     <div style="margin-top: 25px">
                                         <a href="index.php">I remember!</a>

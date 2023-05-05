@@ -122,7 +122,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 												<div class="form-group">
 													<label class="col-sm-2 control-label">Vehicle Title<span style="color:red">*</span></label>
 													<div class="col-sm-4">
-														<input type="text" name="vehicletitle" class="form-control" required>
+														<input type="text" name="vehicletitle" class="form-control" maxlength="50" required>
 													</div>
 													<label class="col-sm-2 control-label">Select Brand<span style="color:red">*</span></label>
 													<div class="col-sm-4">
@@ -151,7 +151,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 												<div class="form-group">
 													<label class="col-sm-2 control-label">Price Per Day(in USD)<span style="color:red">*</span></label>
 													<div class="col-sm-4">
-														<input type="text" name="priceperday" class="form-control" required>
+														<input type="text" name="priceperday" class="form-control myInput" maxlength="11" required>
 													</div>
 													<label class="col-sm-2 control-label">Select Fuel Type<span style="color:red">*</span></label>
 													<div class="col-sm-4">
@@ -169,11 +169,11 @@ if (strlen($_SESSION['alogin']) == 0) {
 												<div class="form-group">
 													<label class="col-sm-2 control-label">Model Year<span style="color:red">*</span></label>
 													<div class="col-sm-4">
-														<input type="text" name="modelyear" class="form-control" required>
+														<input type="date" name="modelyear" class="form-control" required>
 													</div>
 													<label class="col-sm-2 control-label">Seating Capacity<span style="color:red">*</span></label>
 													<div class="col-sm-4">
-														<input type="text" name="seatingcapacity" class="form-control" required>
+														<input type="text" name="seatingcapacity" class="form-control myInput" maxlength="11" required>
 													</div>
 												</div>
 												<div class="hr-dashed"></div>
@@ -188,23 +188,23 @@ if (strlen($_SESSION['alogin']) == 0) {
 
 												<div class="form-group">
 													<div class="col-sm-4">
-														Image 1 <span style="color:red">*</span><input type="file" name="img1" required>
+														Image 1 <span style="color:red">*</span><input type="file" name="img1" accept="image/*" required>
 													</div>
 													<div class="col-sm-4">
-														Image 2<span style="color:red">*</span><input type="file" name="img2" required>
+														Image 2<span style="color:red">*</span><input type="file" name="img2" accept="image/*" required>
 													</div>
 													<div class="col-sm-4">
-														Image 3<span style="color:red">*</span><input type="file" name="img3" required>
+														Image 3<span style="color:red">*</span><input type="file" name="img3" accept="image/*" required>
 													</div>
 												</div>
 
 
 												<div class="form-group">
 													<div class="col-sm-4">
-														Image 4<span style="color:red">*</span><input type="file" name="img4" required>
+														Image 4<span style="color:red">*</span><input type="file" name="img4" accept="image/*" required>
 													</div>
 													<div class="col-sm-4">
-														Image 5<input type="file" name="img5">
+														Image 5<input type="file" accept="image/*" name="img5">
 													</div>
 
 												</div>
@@ -340,6 +340,23 @@ if (strlen($_SESSION['alogin']) == 0) {
 		<script src="js/fileinput.js"></script>
 		<script src="js/chartData.js"></script>
 		<script src="js/main.js"></script>
+		<script>
+			$(document).ready(function() {
+				$('.myInput').on('keydown keyup', function(event) {
+					var input = $(this);
+					var value = input.val();
+
+					value = value.replace(/[^0-9\.]/g, '');
+
+					var decimalCount = (value.match(/\./g) || []).length;
+					if (decimalCount > 1) {
+						value = value.replace(/\.+$/, '');
+					}
+
+					input.val(value);
+				});
+			})
+		</script>
 	</body>
 
 	</html>

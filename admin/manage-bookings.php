@@ -152,8 +152,7 @@ if (isset($_GET['aeid'])) {
 													<td><?= date('g: i a', strtotime($result['PostingDate'])) ?></td>
 													<td>
 														<a href="manage-bookings.php?aeid=<?php echo htmlentities($result['id']); ?>" onclick="return confirm('Do you really want to Confirm this booking')"> Confirm</a> /
-														<a href="manage-bookings.php?eid=<?php echo htmlentities($result['id']); ?>" onclick="return confirm('Do you really want to Cancel this Booking')"> Cancel</a> /
-														<a href="#">Print</a>
+														<a href="manage-bookings.php?eid=<?php echo htmlentities($result['id']); ?>" onclick="return confirm('Do you really want to Cancel this Booking')"> Cancel</a>
 													</td>
 												</tr>
 										<?php $cnt = $cnt + 1;
