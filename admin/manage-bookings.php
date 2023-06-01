@@ -47,6 +47,7 @@ if (isset($_GET['aeid'])) {
 
 	<title>Car Rental Portal |Admin Manage testimonials </title>
 	<link rel="shortcut icon" href="../assets/images/favicon-icon/favicon.png">
+	<!-- <script src="https://cdn.tailwindcss.com"></script> -->
 	<!-- Font awesome -->
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<!-- Sandstone Bootstrap CSS -->
@@ -152,7 +153,8 @@ if (isset($_GET['aeid'])) {
 													<td><?= date('g: i a', strtotime($result['PostingDate'])) ?></td>
 													<td>
 														<a href="manage-bookings.php?aeid=<?php echo htmlentities($result['id']); ?>" onclick="return confirm('Do you really want to Confirm this booking')"> Confirm</a> /
-														<a href="manage-bookings.php?eid=<?php echo htmlentities($result['id']); ?>" onclick="return confirm('Do you really want to Cancel this Booking')"> Cancel</a>
+														<a href="manage-bookings.php?eid=<?php echo htmlentities($result['id']); ?>" onclick="return confirm('Do you really want to Cancel this Booking')"> Cancel</a> /
+														<a data-row-data="<?= htmlentities($result['id']) ?>" class="row-print" href="#"> Print</a>
 													</td>
 												</tr>
 										<?php $cnt = $cnt + 1;
@@ -256,7 +258,12 @@ if (isset($_GET['aeid'])) {
 						}
 					}
 				});
-			})
+			});
+
+			$('.row-print').click(function() {
+				var id = $(this).data('row-data');
+				window.open('ind-print.php?pid='+ id, '_');
+			});
 		})
 	</script>
 </body>

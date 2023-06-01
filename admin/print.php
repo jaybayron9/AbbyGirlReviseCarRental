@@ -21,15 +21,73 @@ if (isset($_GET['a']) && $_GET['a'] == 2) {
     require("pdfreport/fpdf.php");
 
     class PDF extends FPDF {
-        function FancyTable($header, $rowData) {
+        protected $col = 0; // Current column
+        protected $y0; 
+    
+        function Header() {
+            // Logo
+            $this->Image('../assets/images/logg.png',10,6,50);
+            // Line break
+            $this->SetFont('Arial','B',15);
+            $this->Cell(15);
+            $this->Cell(0,10,'BOOKINGS',0,0,'C');
+            $this->Ln(-3);
+            
+            $date = isset($_SESSION['date']) ? date($_SESSION['date']) : 'No Selected Date';
+
+            $this->SetCol(2);
+            $this->SetFont('Courier','',8);
+            $this->Cell(2,4,"                  DATE: " . date("d/m/Y", strtotime($date)),10,0,'');
+            $this->Ln(25);
+        }
+
+        function Footer() {
+            // Position at 1.5 cm from bottom
+            $this->SetY(-15);
+            // Arial italic 8
+            $this->SetFont('Arial','I',8);
+            $this->SetTextColor(0);
+            // Page number
+            $this->Cell(0,10,$this->PageNo(),0,0,'C');
+        }
+    
+        function SetCol($col) {
+            // Set position at a given column
+            $this->col = $col;
+            $x = 10+$col*65;
+            $this->SetLeftMargin($x);
+            $this->SetX($x);
+        }
+
+        function AcceptPageBreak() {
+            // Method accepting or not automatic page break
+            if($this->col<2) {
+                // Go to next column
+                $this->SetCol($this->col+1);
+                // Set ordinate to top
+                $this->SetY($this->y0);
+                // Keep on page
+                return false;
+            }
+            else
+            {
+                // Go back to first column
+                $this->SetCol(0);
+                // Page break
+                return true;
+            }
+        }
+
+        function FancyTable($header, $rowData, $tableHeight) {
+            $this->SetCol(0);
             // Colors, line width and bold font
-            $this->SetFillColor(255, 0, 0);
+            $this->SetFillColor(128, 128, 128);
             $this->SetTextColor(255);
-            $this->SetDrawColor(128, 0, 0);
+            $this->SetDrawColor(0, 0, 0);
             $this->SetLineWidth(.3);
             $this->SetFont('', 'B');
             // Header
-            $w = array(27, 25, 25, 25, 25, 28, 25);
+            $w = array(27, 30, 26, 26, 27, 26, 27);
             for ($i = 0; $i < count($header); $i++)
             $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C', true );
             $this->Ln();
@@ -44,6 +102,21 @@ if (isset($_GET['a']) && $_GET['a'] == 2) {
             $fill = false;
     
             foreach($rowData as $id) {
+                // Check if there is enough space for the next row
+                if ($this->GetY() + 6 > $tableHeight) { // Adjust the value 6 as needed
+                    $this->AddPage();
+                    $this->SetCol(0);
+                    $this->SetFont('', 'B');
+                    for ($i = 0; $i < count($header); $i++) {
+                        $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C', true);
+                    }
+                    $this->Ln();
+                    $this->SetFillColor(224, 235, 255);
+                    $this->SetTextColor(0);
+                    $this->SetFont('');
+                    $fill = false;
+                }
+
                 $sql = $dbh->query("SELECT tblvehicles.PricePerDay, tblusers.FullName,tblbrands.BrandName,tblvehicles.VehiclesTitle,tblbooking.FromDate,tblbooking.ToDate,tblbooking.message,tblbooking.VehicleId as vid,tblbooking.Status,tblbooking.PostingDate,tblbooking.id  from tblbooking join tblvehicles on tblvehicles.id=tblbooking.VehicleId join tblusers on tblusers.EmailId=tblbooking.userEmail join tblbrands on tblvehicles.VehiclesBrand=tblbrands.id WHERE tblbooking.id = '{$id}' ORDER BY tblbooking.Status");
                 
                 foreach($sql as $row) {
@@ -52,13 +125,13 @@ if (isset($_GET['a']) && $_GET['a'] == 2) {
                     
                     $days = floor(($endDate - $startDate) / (60 * 60 * 24))  + 1;
 
-                    $this->Cell($w[0], 6,$row['FullName'], 'LR', 0, 'L', $fill);
-                    $this->Cell($w[1], 6, $row['VehiclesTitle'], 'LR', 0, 'L', $fill);
-                    $this->Cell($w[2], 6, $row['FromDate'], 'LR', 0, 'L', $fill);
-                    $this->Cell($w[3], 6, $row['ToDate'], 'LR', 0, 'L', $fill);
-                    $this->Cell($w[4], 6, $row['message'], 'LR', 0, 'L', $fill);
-                    $this->Cell($w[5], 6, number_format($row['PricePerDay'],2), 'LR', 0, 'L', $fill);
-                    $this->Cell($w[4], 6, number_format($days * $row['PricePerDay'],2), 'LR', 0, 'L', $fill);
+                    $this->Cell($w[0], 8,$row['FullName'], 'LR', 0, 'L', $fill);
+                    $this->Cell($w[1], 8, $row['VehiclesTitle'], 'LR', 0, 'L', $fill);
+                    $this->Cell($w[2], 8, $row['FromDate'], 'LR', 0, 'R', $fill);
+                    $this->Cell($w[3], 8, $row['ToDate'], 'LR', 0, 'R', $fill);
+                    $this->Cell($w[4], 8, $row['message'], 'LR', 0, 'L', $fill);
+                    $this->Cell($w[5], 8, number_format($row['PricePerDay'],2), 'LR', 0, 'R', $fill);
+                    $this->Cell($w[4], 8, number_format($days * $row['PricePerDay'],2), 'LR', 0, 'R', $fill);
                     $this->Ln();
 
 
@@ -93,19 +166,26 @@ if (isset($_GET['a']) && $_GET['a'] == 2) {
     $pdf = new PDF();
     $pdf->AddPage();
     
-    $pdf->SetX(7);
-    $pdf->SetFont('Courier','',10);
-    $date = isset($_SESSION['date']) ? date($_SESSION['date']) : '';
-    $pdf->Cell(20,10,"Date : $date",0,1,'');
-
-    $pdf->SetX(7);
-    $pdf->SetFont('Courier','',15);
-    $pdf->Cell(22,15,'Total Sale: ' . number_format($pdf->getSale($_SESSION['ids']), 2) . 'Php' ,0,1,'');
-    
     $header = array('Name', 'Vehicle', 'From date', 'To Date', 'Message', 'Price/Day', 'Total');
     // Data loading
     $pdf->SetFont('Courier', '', 10);
-    $pdf->FancyTable($header, $_SESSION['ids']);
+    
+    $tableHeight = $pdf->GetPageHeight() - $pdf->GetY() - 1;
+    $pdf->FancyTable($header, $_SESSION['ids'], $tableHeight);
+
+    $pdf->SetCol(0);
+    $pdf->SetFillColor(128, 128, 128);
+    $pdf->SetTextColor(255);
+    $pdf->SetDrawColor(0,0,0);
+    $pdf->SetLineWidth(.3);
+    $pdf->SetFont('','B');
+    $pdf->Cell(162,7,'TOTAL SALE',1,0,'C',true);
+    $pdf->Cell(27,7,number_format($pdf->getSale($_SESSION['ids']), 2),1,0,'C',true);
+
+    // Check if there is enough space for the next content
+    if ($pdf->GetY() + 20 > $pdf->GetPageHeight()) { // Adjust the value 20 as needed
+        $pdf->AddPage();
+    }
 
     // $filename = 'report_' . date('m-d-Y') . '.pdf';
     // $pdf->Output($filename, 'D');
